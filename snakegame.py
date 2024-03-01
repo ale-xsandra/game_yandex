@@ -6,7 +6,7 @@ import random
 # размер экрана
 weidth, height = 800, 600
 background_color = (0, 0, 0)
-block_size = 10
+block_size = 15
 
 wall_blocks = 3
 wall_color = (31, 31, 31)
@@ -48,17 +48,13 @@ def main():
 def initialz_pygame():
     # инициализация pygame
     pygame.init()
-    ''' #меняем иконку в окне
-        pygame.display.set_icon(icon)
-        icon = pygame.image.load()'''
     # выставляем размер игрового окна
     screen = pygame.display.set_mode((weidth, height))
     # меняем название
     pygame.display.set_caption('Snake')
     clock = pygame.time.Clock()
     # подключение музыки
-    #pygame.mixer.pre_init(44100, -16, 1, 512)
-    pygame.mixer.music.load('/User/Jenya/Downloads/python/game_yandex/music_snake.mp3')
+    pygame.mixer.music.load('/Users/Jenya/Downloads/game_yandex/personal_resume_presentation_pack/music_snake.mp3')
     pygame.mixer.music.play()
 
     return screen, clock
@@ -140,24 +136,22 @@ def check_apple_consumotion(game_state):
             apples_eat += 1
             # увеличиваем скорость на 10% с округлением до ближайшего целого числа
             game_state['game_speed'] = (game_state['game_speed'] * speed_up)
-        if apples_eat == 0:
-            game_state['snake'].pop()
+    if apples_eat == 0:
+        game_state['snake'].pop()
 
 
 def check_key_presses(events, game_state):
-    if 'quit' in events:
-        game_state['prog_running'] = False
-    elif not game_state['prog_running']:
+    if not game_state['game_running']:
         if 'escape' in events:
-            game_state['prog_running'] = False
-        elif 'enter' in events:
+            game_state['game_running'] = False
+        elif 'return' in events:
             initialz_new_game(game_state)
             game_state['game_running'] = True
     elif game_state['game_paused']:
         if 'escape' in events:
-            game_state['game_running'] = False
-        elif 'space' in events:
             game_state['game_paused'] = False
+        elif 'space' in events:
+            game_state['game_running'] = False
     else:
         if 'escape' in events or 'space' in events:
             game_state['game_paused'] = True
@@ -201,7 +195,6 @@ def place_snake(lenght, game_state):
 
 def place_apples(n, game_state):
     for i in range(n):
-        game_state['apples'] = 0
         # рандомные координаты для яблок
         x = random.randint(0, size_x - 1)
         y = random.randint(0, size_y - 1)
@@ -297,4 +290,5 @@ def perform_end():
     sys.exit()
 
 
-main()
+if __name__ == '__main__':
+    main()
